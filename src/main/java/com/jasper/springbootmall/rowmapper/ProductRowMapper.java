@@ -1,5 +1,6 @@
 package com.jasper.springbootmall.rowmapper;
 
+import com.jasper.springbootmall.constant.ProductCategory;
 import com.jasper.springbootmall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -12,7 +13,16 @@ public class ProductRowMapper implements RowMapper<Product> {
         Product product=new Product();
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
-        product.setCategory(rs.getString("category"));
+
+        // String ->Enum
+        String categoryStr=rs.getString("category");
+        ProductCategory category=ProductCategory.valueOf(categoryStr);
+        product.setCategory(category);
+        // from daabase String transfer to Enum
+        //product.setCategory(ProductCategory.valueOf(rs.getString("category")));
+
+
+
         product.setImageUrl(rs.getString("image_url"));
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));
