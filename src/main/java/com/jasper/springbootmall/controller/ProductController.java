@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    //察詢商品
    @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
          Product product=productService.getProductById(productId);
@@ -27,6 +28,7 @@ public class ProductController {
              return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
          }
     }
+    //新增商品
     @PostMapping("/products")
     public  ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
         Integer productId=  productService.createProduct(productRequest);
@@ -34,7 +36,7 @@ public class ProductController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(product);
 
     }
-
+    //更新商品
     @PutMapping("/products/{productId}")
     public  ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                   @RequestBody @Valid ProductRequest productRequest){
@@ -52,4 +54,16 @@ public class ProductController {
 
         return  ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
+
+    //刪除商品
+    @DeleteMapping("/products/{productId}")
+    public  ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
+       productService.deleteProductById(productId);
+       //204 return to front side
+       return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+
+    }
+
+
 }
