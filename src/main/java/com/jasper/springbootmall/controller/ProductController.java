@@ -1,5 +1,6 @@
 package com.jasper.springbootmall.controller;
 
+import com.jasper.springbootmall.constant.ProductCategory;
 import com.jasper.springbootmall.dto.ProductRequest;
 import com.jasper.springbootmall.model.Product;
 import com.jasper.springbootmall.service.ProductService;
@@ -18,8 +19,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public  ResponseEntity<List<Product>> getProduct(){
-       List<Product> productList= productService.getProducts();
+    public  ResponseEntity<List<Product>> getProducts(
+            //category required = false 參數式可選的
+           @RequestParam(required = false) ProductCategory category,
+           @RequestParam(required = false) String search
+    ){
+       List<Product> productList= productService.getProducts(category,search);
        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
     //察詢商品

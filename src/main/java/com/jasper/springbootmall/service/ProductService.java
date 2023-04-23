@@ -1,5 +1,6 @@
 package com.jasper.springbootmall.service;
 
+import com.jasper.springbootmall.constant.ProductCategory;
 import com.jasper.springbootmall.dto.ProductRequest;
 import com.jasper.springbootmall.model.Product;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory category,String search);
 
     Product getProductById(Integer productId);
 
