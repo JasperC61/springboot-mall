@@ -1,6 +1,7 @@
 package com.jasper.springbootmall.controller;
 
 import com.jasper.springbootmall.constant.ProductCategory;
+import com.jasper.springbootmall.dto.ProductQueryParams;
 import com.jasper.springbootmall.dto.ProductRequest;
 import com.jasper.springbootmall.model.Product;
 import com.jasper.springbootmall.service.ProductService;
@@ -8,7 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,11 @@ public class ProductController {
            @RequestParam(required = false) ProductCategory category,
            @RequestParam(required = false) String search
     ){
-       List<Product> productList= productService.getProducts(category,search);
+        ProductQueryParams productQueryParams=new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+       List<Product> productList= productService.getProducts(productQueryParams);
        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
     //察詢商品
