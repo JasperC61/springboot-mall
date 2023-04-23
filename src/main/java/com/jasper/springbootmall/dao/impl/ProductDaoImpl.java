@@ -38,6 +38,25 @@ public class ProductDaoImpl  implements ProductDao {
     }
 
     @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+        String sql="update product set product_name=:productName,category=:category,image_url=:imageUrl,"+
+                "price=:price,stock=:stock,description=:description,last_modified_date=:lastModifiedDate"+
+                " where product_id=:productId";
+        Map<String,Object> map=new HashMap<>();
+        map.put("productId",productId);
+        map.put("productName",productRequest.getProductName());
+        map.put("category",productRequest.getCategory().toString());
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+        map.put("lastModifiedDate",new Date());
+        //執行sql,修改商品數據
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
+
+    @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql="insert into product(product_name,category,image_url,price,stock,description,created_date,last_modified_date) values (:productName,:category,:imageUrl,:price,:stock,:description,:createdDate,:lastModifiedDate)";
         //reveive the front site key in data put on map
@@ -60,5 +79,7 @@ public class ProductDaoImpl  implements ProductDao {
         int productId=keyHolder.getKey().intValue();
 
         return productId;
+
+
     }
 }
