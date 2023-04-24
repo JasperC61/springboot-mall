@@ -22,14 +22,16 @@ import java.util.List;
 @Validated
 @RestController
 public class ProductController {
+
+
     @Autowired
     private ProductService productService;
 
     @GetMapping("/products")
     public  ResponseEntity<Page<Product>> getProducts(
             //查詢條件 category required = false 參數式可選的
-           @RequestParam(required = false) ProductCategory category,
-           @RequestParam(required = false) String search,
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search,
             //排序 sorting
             @RequestParam (defaultValue = "created_date")String orderBy,
             @RequestParam (defaultValue = "desc")String sort,
@@ -47,31 +49,31 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
         //商品列表 productList
-       List<Product> productList= productService.getProducts(productQueryParams);
-       //計算商品總筆數
-       Integer total=productService.countProduct(productQueryParams);
-       //分頁
-       Page<Product> page =new Page<>();
-       page.setLimit(limit);
-       page.setOffset(offset);
-       page.setTotal(total);
-       page.setResults(productList);
-       //回傳前端
-       return ResponseEntity.status(HttpStatus.OK).body(page);
+        List<Product> productList= productService.getProducts(productQueryParams);
+        //計算商品總筆數
+        Integer total=productService.countProduct(productQueryParams);
+        //分頁
+        Page<Product> page =new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+        //回傳前端
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
     //察詢商品
-   @GetMapping("/products/{productId}")
+    @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
-         Product product=productService.getProductById(productId);
+        Product product=productService.getProductById(productId);
 
-         if (product !=null){
-             //200 ok,response the body data to front site
-             return  ResponseEntity.status(HttpStatus.OK).body(product);
+        if (product !=null){
+            //200 ok,response the body data to front site
+            return  ResponseEntity.status(HttpStatus.OK).body(product);
 
-         }else{
-             //null no data 404,response the body data to front site
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-         }
+        }else{
+            //null no data 404,response the body data to front site
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     //新增商品
     @PostMapping("/products")
@@ -85,9 +87,9 @@ public class ProductController {
     @PutMapping("/products/{productId}")
     public  ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                   @RequestBody @Valid ProductRequest productRequest){
-       //檢查商品是否存在
+        //檢查商品是否存在
         Product product=productService.getProductById(productId);
-       //將資料返回前端
+        //將資料返回前端
         if (product==null){
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -103,9 +105,9 @@ public class ProductController {
     //刪除商品
     @DeleteMapping("/products/{productId}")
     public  ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
-       productService.deleteProductById(productId);
-       //204 return to front side
-       return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        productService.deleteProductById(productId);
+        //204 return to front side
+        return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
 
     }
