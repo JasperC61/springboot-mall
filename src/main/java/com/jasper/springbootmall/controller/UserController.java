@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
     //創建帳號
@@ -27,7 +28,7 @@ public class UserController {
           //將商品數據取回傳給前端
           return  ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
-    @PostMapping("/user/login")
+    @PostMapping("/users/login")
    //登入功能
     public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         //實作login方法,使用人所使用密碼可否成功登入,用user接住返回值
