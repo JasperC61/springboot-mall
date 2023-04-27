@@ -5,6 +5,7 @@ import com.jasper.springbootmall.dao.ProductDao;
 import com.jasper.springbootmall.dao.impl.ProductDaoImpl;
 import com.jasper.springbootmall.dto.BuyItem;
 import com.jasper.springbootmall.dto.CreateOrderRequest;
+import com.jasper.springbootmall.model.Order;
 import com.jasper.springbootmall.model.OrderItem;
 import com.jasper.springbootmall.model.Product;
 import com.jasper.springbootmall.service.OrderService;
@@ -21,6 +22,16 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     @Autowired
     private ProductDaoImpl productDao;
+
+    //分別在order及order_item表中取的數據,所以會call orderDao兩次
+    @Override
+    public Order getOrderById(Integer orderId) {
+        Order order=orderDao.getOrderById(orderId);
+        List<OrderItem> orderItemList=orderDao.getOrderItemByOrderId(orderId);
+        order.setOrderItemList(orderItemList);
+        return order;
+    }
+
     //邏輯處裡在service處裡
     @Transactional //復原資料庫操作,兩張資料庫數據同時發生或同時不發生 類似ROLL BACK,避免數據不一致
     @Override
