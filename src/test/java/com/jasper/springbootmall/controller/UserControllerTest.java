@@ -95,34 +95,34 @@ public class UserControllerTest {
     }
 
     // 登入
-//    @Test
-//    public void login_success() throws Exception {
-//        // 先註冊新帳號
-//        UserRegisterRequest  userRegisterRequest = new UserRegisterRequest();
-//        userRegisterRequest.setEmail("li@gmail.com");
-//        userRegisterRequest.setPassword("0000");
-//
-//        register(userRegisterRequest);
-//
-//        // 再測試登入功能
-//        UserLoginRequest userLoginRequest = new UserLoginRequest();
-//        userLoginRequest.setEmail(userRegisterRequest.getEmail());
-//        userLoginRequest.setPassword(userRegisterRequest.getPassword());
-//
-//        String json = objectMapper.writeValueAsString(userRegisterRequest);
-//
-//        RequestBuilder requestBuilder = MockMvcRequestBuilders
-//                .post("/users/login")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json);
-//
-//        mockMvc.perform(requestBuilder)
-//                .andExpect(status().is(200))
-//                .andExpect(jsonPath("$.userId", notNullValue()))
-//                .andExpect(jsonPath("$.email", equalTo(userRegisterRequest.getEmail())))
-//                .andExpect(jsonPath("$.createdDate", notNullValue()))
-//                .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
-//    }
+    @Test
+    public void login_success() throws Exception {
+        // 先註冊新帳號
+        UserRegisterRequest  userRegisterRequest = new UserRegisterRequest();
+        userRegisterRequest.setEmail("li@gmail.com");
+        userRegisterRequest.setPassword("0000");
+
+        register(userRegisterRequest);
+
+        // 再測試登入功能
+        UserLoginRequest userLoginRequest = new UserLoginRequest();
+        userLoginRequest.setEmail(userRegisterRequest.getEmail());
+        userLoginRequest.setPassword(userRegisterRequest.getPassword());
+
+        String json = objectMapper.writeValueAsString(userRegisterRequest);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.userId", notNullValue()))
+                .andExpect(jsonPath("$.email", equalTo(userRegisterRequest.getEmail())))
+                .andExpect(jsonPath("$.createdDate", notNullValue()))
+                .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
+    }
 
     private void register(UserRegisterRequest userRegisterRequest) throws Exception {
         String json = objectMapper.writeValueAsString(userRegisterRequest);
