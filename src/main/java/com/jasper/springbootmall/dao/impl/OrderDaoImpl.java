@@ -19,10 +19,10 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
      private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-
+    //接收service層傳遞過來參數插入到資料庫中,實作OrderDao方法,dao單純跟資料庫作溝通
     @Override
     public Integer createOrder(Integer userId, Integer totalAmount) {
-
+       //order為SQL關鍵字,硬要用須加上‵才可用
         String sql="insert into `order`(user_id,total_amount,created_date,last_modified_date)"+
                 "values (:userId, :totalAmount, :createdDate, :lastModifiedDate)";
 
@@ -35,7 +35,7 @@ public class OrderDaoImpl implements OrderDao {
         KeyHolder keyHolder =new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map),keyHolder);
         int orderId=keyHolder.getKey().intValue();
-
+         //在資料庫中生成orderId
          return orderId;
     }
 

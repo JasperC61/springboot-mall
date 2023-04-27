@@ -19,12 +19,14 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-//    @PostMapping("/users/{userId}/orders")
-//    public ResponseEntity<?> createOrder(@PathVariable Integer userId,
-//                                         @RequestBody @Valid CreateOrderRequest createOrderRequest){
-//       Integer orderId=OrderService.createOrder(userId,createOrderRequest);
-//        return  ResponseEntity.status(HttpStatus.CREATED).body(orderId);
-//
-//
-//    }
+    @PostMapping("/users/{userId}/orders")
+    //取的URL中userId值,前端傳遞格式及參數
+    public ResponseEntity<?> createOrder(@PathVariable Integer userId,
+                                         @RequestBody @Valid CreateOrderRequest createOrderRequest){
+       Integer orderId=orderService.createOrder(userId,createOrderRequest);
+       //回傳給前端
+        return  ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+
+
+    }
 }

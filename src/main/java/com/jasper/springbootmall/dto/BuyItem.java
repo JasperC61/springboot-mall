@@ -6,7 +6,7 @@ public class BuyItem {
     @NotNull
     private  Integer productId;
     @NotNull
-    private  Integer quantiy;
+    private  Integer quantity;
 
     public Integer getProductId() {
         return productId;
@@ -16,11 +16,11 @@ public class BuyItem {
         this.productId = productId;
     }
 
-    public Integer getQuantiy() {
-        return quantiy;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuantiy(Integer quantiy) {
-        this.quantiy = quantiy;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
