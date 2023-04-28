@@ -6,6 +6,7 @@ import com.jasper.springbootmall.dao.UserDao;
 import com.jasper.springbootmall.dao.impl.ProductDaoImpl;
 import com.jasper.springbootmall.dto.BuyItem;
 import com.jasper.springbootmall.dto.CreateOrderRequest;
+import com.jasper.springbootmall.dto.OrderQueryParams;
 import com.jasper.springbootmall.model.Order;
 import com.jasper.springbootmall.model.OrderItem;
 import com.jasper.springbootmall.model.Product;
@@ -33,6 +34,22 @@ public class OrderServiceImpl implements OrderService {
     private ProductDaoImpl productDao;
     @Autowired
     private UserDao userDao;
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        return orderDao.countOrder(orderQueryParams);
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        List<Order> orderList=orderDao.getOrders(orderQueryParams);
+
+        for(Order order:orderList){
+            List<OrderItem> orderItemList=orderDao.getOrderItemByOrderId(order.getOrderId());
+            order.setOrderItemList(orderItemList);
+        }
+        return orderList;
+    }
 
     //分別在order及order_item表中取的數據,所以會call orderDao兩次
     @Override

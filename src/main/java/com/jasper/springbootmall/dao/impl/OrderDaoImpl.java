@@ -1,6 +1,7 @@
 package com.jasper.springbootmall.dao.impl;
 
 import com.jasper.springbootmall.dao.OrderDao;
+import com.jasper.springbootmall.dto.OrderQueryParams;
 import com.jasper.springbootmall.model.Order;
 import com.jasper.springbootmall.model.OrderItem;
 import com.jasper.springbootmall.rowmapper.OrderItemRowMapper;
@@ -21,6 +22,44 @@ import java.util.Map;
 public class OrderDaoImpl implements OrderDao {
     @Autowired
      private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        String sql="select count(*) from `order` where 1=1";
+        Map<String,Object> map=new HashMap<>();
+        //查詢條件
+        sql=addFilteringSql(sql,map,orderQueryParams);
+
+        Integer total=namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+
+        return total;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql="select order_id, user_id,total_amount, created_date, last_modified_date from `order` where 1=1";
+        Map<String,Object> map=new HashMap<>();
+        //查詢條件
+        sql=addFilteringSql(sql,map,orderQueryParams);
+        //排序
+        sql=sql+" order by created_date desc";
+        //分頁
+        sql=sql+" LIMIT :limit OFFSET :offset";
+        map.put("limit",orderQueryParams.getLimit());
+        map.put("offset",orderQueryParams.getOffset());
+
+        List<Order> orderList=namedParameterJdbcTemplate.query(sql,map,new OrderRowMapper());
+
+        return orderList;
+    }
+
+    private String addFilteringSql(String sql,Map<String,Object> map,OrderQueryParams orderQueryParams){
+         if (orderQueryParams.getUserId()!=null){
+             sql=sql+" and user_id=:userId";
+             map.put("userId",orderQueryParams.getUserId());
+         }
+         return  sql;
+    }
 
     @Override
     public List<OrderItem> getOrderItemByOrderId(Integer orderId) {
